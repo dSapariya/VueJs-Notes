@@ -291,8 +291,6 @@ In this example, the first `food-item` component receives a custom `food-desc` v
 
 ---
 
-# Vue Guide
-
 ## Vue $emit()
 With the built-in `$emit()` method in Vue, we can create a custom event in the child component that can be captured in the parent element.
 
