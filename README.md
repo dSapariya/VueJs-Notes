@@ -156,3 +156,102 @@ A watcher is a method that watches a data property with the same name.
 - Watchers are not referred to from HTML.
 
 ---
+Here's a complete README file for Vue templates, single file components, and Vue components:
+
+---
+
+# Vue Guide
+
+## Vue Templates
+A template in Vue is what we call the HTML part of our Vue application.
+
+- The `<template>` tag will later be used in `.vue` files to structure our code in a better way.
+- It is possible to use `template` as a configuration option in the Vue instance and put the HTML code inside.
+
+```javascript
+const app = Vue.createApp({
+  template: `
+    <h1>{{ message }}</h1>
+    <p>This is a second line of HTML code, inside back tick quotes</p>
+  `,
+  data() {
+    return {
+      message: "Hello World!"
+    };
+  }
+});
+app.mount('#app');
+```
+
+## Single File Components (SFCs)
+SFCs (Single File Components), or `.vue` files, are easier to work with but cannot run directly in the browser. We need to set up our computer to compile our `.vue` files to `.html`, `.css`, and `.js` files so that the browser can run our Vue application.
+
+All SFC `.vue` files consist of three parts:
+- `<template>`: where the HTML content is.
+- `<script>`: for our Vue code.
+- `<style>`: where we write the CSS styling.
+
+Example of a Single File Component (`MyComponent.vue`):
+
+```vue
+<template>
+  <div>
+    <h1>{{ message }}</h1>
+    <p>This is a single file component</p>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      message: "Hello from SFC!"
+    };
+  }
+};
+</script>
+
+<style>
+div {
+  color: blue;
+}
+</style>
+```
+
+## Vue Components
+Components in Vue let us decompose our web page into smaller pieces that are easy to work with.
+
+- We can work with a Vue component in isolation from the rest of the web page, with its own content and logic.
+- A web page often consists of many Vue components.
+- Components are reusable and self-contained pieces of code that encapsulate a specific part of the user interface, making Vue applications scalable and easier to maintain.
+
+A very useful and powerful property when working with components in Vue is that we can make them behave individually, without having to mark elements with unique IDs like we must do with plain JavaScript. Vue automatically takes care to treat each component individually.
+
+Example of a simple Vue component:
+
+```javascript
+Vue.component('my-component', {
+  template: '<h1>{{ message }}</h1>',
+  data() {
+    return {
+      message: 'Hello from My Component!'
+    };
+  }
+});
+
+const app = new Vue({
+  el: '#app'
+});
+```
+
+Example of using components in a Vue instance:
+
+```html
+<div id="app">
+  <my-component></my-component>
+</div>
+```
+
+With components, we can build complex user interfaces by composing smaller, reusable pieces of code, ensuring a clean and maintainable codebase.
+
+---
