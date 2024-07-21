@@ -255,3 +255,110 @@ Example of using components in a Vue instance:
 With components, we can build complex user interfaces by composing smaller, reusable pieces of code, ensuring a clean and maintainable codebase.
 
 ---
+
+Here's an updated README file that includes Vue Props with examples:
+
+---
+
+# Vue Guide
+
+## Vue Props
+Props is a configuration option in Vue that allows us to pass data to components via custom attributes on the component tag.
+
+### Defining Props
+
+Props can be defined in a component with specific types, default values, and validators.
+
+Example:
+
+```javascript
+Vue.component('food-item', {
+  props: {
+    foodDesc: {
+      type: String,
+      required: false,
+      default: 'This is the default description.',
+      validator: function(value) {
+        return value.length > 20 && value.length < 50;
+      }
+    }
+  },
+  template: '<p>{{ foodDesc }}</p>'
+});
+```
+
+In this example, `foodDesc` is a prop of type `String`, it is not required, has a default value, and includes a validator function that ensures the length of the value is between 20 and 50 characters.
+
+### Using Props
+
+Props are passed to components via custom attributes in the component tag.
+
+Example:
+
+```html
+<div id="app">
+  <food-item food-desc="This is a custom description that fits within the length constraints."></food-item>
+  <food-item></food-item>
+</div>
+```
+
+```javascript
+new Vue({
+  el: '#app'
+});
+```
+
+In this example, the first `food-item` component receives a custom `food-desc` value, while the second `food-item` component uses the default description.
+
+Here's the updated README file that includes information on Vue `$emit()`:
+
+---
+
+# Vue Guide
+
+## Vue $emit()
+With the built-in `$emit()` method in Vue, we can create a custom event in the child component that can be captured in the parent element.
+
+- Props are used to send data from the parent element to the child component.
+- `$emit()` is used to do the opposite: to pass information from the child component to the parent.
+
+### Example
+
+**Parent Component:**
+
+```html
+<div id="app">
+  <child-component @custom-event="handleEvent"></child-component>
+</div>
+```
+
+```javascript
+new Vue({
+  el: '#app',
+  methods: {
+    handleEvent(message) {
+      alert(message);
+    }
+  }
+});
+```
+
+**Child Component:**
+
+```javascript
+Vue.component('child-component', {
+  template: `
+    <button @click="sendEvent">Click me</button>
+  `,
+  methods: {
+    sendEvent() {
+      this.$emit('custom-event', 'Hello from the child component!');
+    }
+  }
+});
+```
+
+In this example:
+- The parent component listens for the `custom-event` from the child component using `@custom-event="handleEvent"`.
+- The child component triggers the `custom-event` using `this.$emit('custom-event', 'Hello from the child component!')`.
+- The `handleEvent` method in the parent component is called when the event is emitted, and it displays an alert with the message from the child component.
