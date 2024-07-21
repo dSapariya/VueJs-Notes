@@ -90,8 +90,6 @@ The difference between `v-show` and `v-if` is that `v-if` creates (renders) the 
 
 ---
 
-# Vue Guide
-
 ## Vue Methods
 Vue methods are functions that belong to the Vue instance under the `methods` property.
 
@@ -148,9 +146,6 @@ A watcher is a method that watches a data property with the same name.
 - Watchers are not referred to from HTML.
 
 ---
-
-
-# Vue Guide
 
 ## Vue Templates
 A template in Vue is what we call the HTML part of our Vue application.
@@ -245,9 +240,6 @@ Example of using components in a Vue instance:
 With components, we can build complex user interfaces by composing smaller, reusable pieces of code, ensuring a clean and maintainable codebase.
 
 ---
-
-
-# Vue Guide
 
 ## Vue Props
 Props is a configuration option in Vue that allows us to pass data to components via custom attributes on the component tag.
