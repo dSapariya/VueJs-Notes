@@ -337,3 +337,101 @@ In this example:
 - The parent component listens for the `custom-event` from the child component using `@custom-event="handleEvent"`.
 - The child component triggers the `custom-event` using `this.$emit('custom-event', 'Hello from the child component!')`.
 - The `handleEvent` method in the parent component is called when the event is emitted, and it displays an alert with the message from the child component.
+
+
+Here's the updated README file for Vue Fallthrough Attributes without the slot example:
+
+---
+
+# Vue Guide: Fallthrough Attributes
+
+## Vue Fallthrough Attributes
+
+In Vue, components can be called with attributes that are not explicitly declared as props. These attributes will fall through to the root element of the component. This feature allows you to:
+
+- **Simplify Code**: You don’t need to declare every attribute as a prop in your component, which reduces boilerplate.
+- **Maintain Flexibility**: Attributes like `class`, `style`, and `v-on` can be passed directly to the root element, providing a cleaner and more intuitive approach.
+
+### Example
+
+**Parent Component:**
+
+```html
+<div id="app">
+  <custom-button class="btn-primary" style="font-size: 20px;" @click="handleClick">Click Me</custom-button>
+</div>
+```
+
+**Child Component (`CustomButton.vue`):**
+
+```vue
+<template>
+  <button v-bind="$attrs" v-on="$listeners">
+    Click Me
+  </button>
+</template>
+
+<script>
+export default {
+  name: 'CustomButton',
+  inheritAttrs: false,  // Prevent automatic inheritance of attributes
+};
+</script>
+```
+
+In this example:
+- The `custom-button` component receives `class`, `style`, and `@click` attributes from the parent component.
+- These attributes fall through to the `<button>` element in the `CustomButton` component.
+
+### `$attrs` and `v-bind`
+
+When using fallthrough attributes, Vue’s `$attrs` object contains all attributes not declared as props. You can use `$attrs` with `v-bind` to apply these attributes to the root element.
+
+**Example:**
+
+```vue
+<template>
+  <input v-bind="$attrs" v-on="$listeners" />
+</template>
+
+<script>
+export default {
+  name: 'CustomInput',
+  inheritAttrs: false,
+};
+</script>
+```
+
+In this example:
+- The `input` element receives attributes like `type`, `placeholder`, and event listeners (`v-on`) from the parent component.
+
+### Multiple Root Elements
+
+If a component has multiple root elements, it’s essential to specify which element should receive the fallthrough attributes.
+
+**Example:**
+
+```vue
+<template>
+  <div>
+    <span v-bind="$attrs" v-on="$listeners">Text</span>
+    <button v-bind="$attrs" v-on="$listeners">Button</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'MultipleRoots',
+  inheritAttrs: false,
+};
+</script>
+```
+
+In this case:
+- Attributes will apply to both `<span>` and `<button>` elements. You may need to manually assign `$attrs` to specific elements if this is not the desired behavior.
+
+### Summary
+
+Fallthrough attributes in Vue provide a way to pass attributes to components without declaring them as props, simplifying your component code. By using `$attrs` and `v-bind`, you can efficiently handle attributes and maintain flexibility in your component designs.
+
+---
