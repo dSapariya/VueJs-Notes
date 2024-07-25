@@ -848,3 +848,86 @@ export default {
 ### Summary
 - Use `v-if`/`v-else` for simple, straightforward conditional rendering.
 - Use dynamic components for more complex, scalable, and stateful component switching.
+
+---
+
+## Dynamic Components with `<KeepAlive>`
+
+To keep the state of your previous inputs when returning to a component, use the `<KeepAlive>` tag around the `<component>` tag. This is necessary because without `<KeepAlive>`, the component is unmounted and then mounted again, reloading the component.
+
+### Example
+
+```vue
+<template>
+  <h1>Dynamic Components</h1>
+  <p>App.vue switches between which component to show.</p>
+  <button @click="toggleValue = !toggleValue">
+    Switch component
+  </button>
+  <KeepAlive>
+    <component :is="activeComp"></component>
+  </KeepAlive>
+</template>
+
+<script>
+import CompOne from './components/CompOne.vue'
+import CompTwo from './components/CompTwo.vue'
+
+export default {
+  components: {
+    'comp-one': CompOne,
+    'comp-two': CompTwo
+  },
+  data() {
+    return {
+      toggleValue: true
+    }
+  },
+  computed: {
+    activeComp() {
+      return this.toggleValue ? 'comp-one' : 'comp-two';
+    }
+  }
+}
+</script>
+```
+
+### The `include` and `exclude` Attributes
+
+All components inside the `<KeepAlive>` tag will be kept alive by default. However, you can specify which components to keep alive using the `include` or `exclude` attributes on the `<KeepAlive>` tag.
+
+When using the `include` or `exclude` attributes, you must name the components with the `name` option.
+
+**Example:**
+```vue
+<script>
+export default {
+  name: 'CompOne',
+  data() {
+    return {
+      imgSrc: 'img_question.svg'
+    }
+  }
+}
+</script>
+```
+
+- `<KeepAlive include="CompOne">`: Only the `CompOne` component will remember its state.
+- `<KeepAlive exclude="CompOne">`: Only the `CompTwo` component will remember its state.
+- `<KeepAlive include="CompOne, CompThree">`: Both the `CompOne` and the `CompThree` components will remember their state.
+
+### The `max` Attribute
+
+You can use the `max` attribute on the `<KeepAlive>` tag to limit the number of components the browser needs to remember the state of.
+
+**Example:**
+```vue
+<KeepAlive :max="2">
+  <component :is="activeComp"></component>
+</KeepAlive>
+```
+With `<KeepAlive :max="2">`, the browser will only remember the user input of the last two visited components.
+
+---
+
+Use `<KeepAlive>` with dynamic components, including how to specify which components should retain their state and how to limit the number of components that do so.
