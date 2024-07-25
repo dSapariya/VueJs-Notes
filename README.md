@@ -1377,3 +1377,171 @@ export default {
 ### Points to Note:
 - **Reactivity:** By providing the `ref` object directly, any changes to `sharedMessage` in the Grandparent component will automatically reflect in the Child component.
 - **Component Hierarchy:** The data can be accessed by any component in the hierarchy below the provider, not just the immediate child.
+
+
+### Vue Router Overview
+
+**Vue Router** allows you to:
+- Navigate between different components or views.
+- Use URLs to direct users to specific parts of your application.
+- Manage browser history for navigation with back and forward buttons.
+- It happens on client side without full page reload, which results in a faster user experience.
+
+### Installation
+
+First, you need to install Vue Router if you haven't already:
+
+```sh
+npm install vue-router
+```
+
+### Setting Up Vue Router
+
+**1. Defining Routes:**
+
+You define routes to map paths to components.
+
+```javascript
+// router/index.js
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeComponent from '../components/HomeComponent.vue';
+import AboutComponent from '../components/AboutComponent.vue';
+
+const routes = [
+  { path: '/', component: HomeComponent },
+  { path: '/about', component: AboutComponent }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+export default router;
+```
+
+**2. Registering Router in Vue Application:**
+
+```javascript
+// main.js
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router';
+
+const app = createApp(App);
+app.use(router);
+app.mount('#app');
+```
+
+### `<router-view>` Component
+
+The `<router-view>` component is a placeholder that Vue Router uses to display the component matched by the current route.
+
+**Example:**
+
+```vue
+<!-- App.vue -->
+<template>
+  <div id="app">
+    <nav>
+      <router-link to="/">Home</router-link>
+      <router-link to="/about">About</router-link>
+    </nav>
+    <router-view></router-view>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'App'
+};
+</script>
+```
+
+### `<router-link>` Component
+
+The `<router-link>` component is used to create navigation links. It automatically applies active classes when the linked route is active.
+
+**Example:**
+
+```vue
+<!-- HomeComponent.vue -->
+<template>
+  <div>
+    <h1>Home</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'HomeComponent'
+};
+</script>
+
+<!-- AboutComponent.vue -->
+<template>
+  <div>
+    <h1>About</h1>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'AboutComponent'
+};
+</script>
+```
+
+**Active Link Styling:**
+
+By default, Vue Router adds the `router-link-active` class to the active `<router-link>`. You can customize this class if needed.
+
+**Example:**
+
+```vue
+<!-- App.vue -->
+<template>
+  <div id="app">
+    <nav>
+      <router-link to="/" active-class="active-link">Home</router-link>
+      <router-link to="/about" active-class="active-link">About</router-link>
+    </nav>
+    <router-view></router-view>
+  </div>
+</template>
+
+<style>
+.active-link {
+  font-weight: bold;
+  color: red;
+}
+</style>
+
+<script>
+export default {
+  name: 'App'
+};
+</script>
+```
+
+### Browser History Management
+
+Vue Router uses the HTML5 History API to manage routing. This allows navigation without full page reloads and supports back and forward button functionality.
+
+### Summary
+
+- **Vue Router**: Enables client-side routing in Vue applications.
+- **<router-view>**: A placeholder for rendering matched components.
+- **<router-link>**: Creates navigational links with automatic active state management.
+- **URL Navigation**: Allows direct navigation to specific components using URLs.
+- **Browser History**: Supports back and forward navigation using browser buttons.
+
+This setup provides a seamless and fast user experience by eliminating full page reloads and enabling smooth navigation within your Vue application.
+
+
+Build
+The `npm run build` build command compiles our Vue project into .html, .js and .css files that are optimized to run directly in the browser.
+
+When your project is built, Vite creates a folder dist with all the files needed to run your project on a public server, with files the browser understands *.html, *.css and *.js instead of the *.vue files we use during development.
+
+To see your built project in the browser, use the commando: `npm run preview`
