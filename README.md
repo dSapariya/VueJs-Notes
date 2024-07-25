@@ -931,3 +931,213 @@ With `<KeepAlive :max="2">`, the browser will only remember the user input of th
 ---
 
 Use `<KeepAlive>` with dynamic components, including how to specify which components should retain their state and how to limit the number of components that do so.
+
+---
+
+## Teleport
+
+The Vue `<Teleport>` tag is used to move content to a different place in the DOM structure.
+
+### `<Teleport>` and the `to` Attribute
+
+To move some content to another location in the DOM structure, use the Vue `<Teleport>` tag around the content and the `to` attribute to define where to move it.
+
+**Example:**
+```vue
+<Teleport to="body">
+  <p>Hello!</p>
+</Teleport>
+```
+
+The `to` attribute value is given as a CSS selector. If you want to send some content to the `body` tag, as in the code above, you simply write `<Teleport to="body">`.
+
+## Usecase 
+Modals and Dialogs: Use <Teleport> to render modals directly under the <body> tag to avoid z-index and CSS issues.
+Tooltips: Use <Teleport> to position tooltips relative to the viewport for accurate placement.
+Context Menus: Use <Teleport> to display context menus at the mouse position for proper interaction.
+
+---
+
+## Template Refs
+
+Template Refs are used to refer to specific DOM elements in Vue.js.
+
+### What are Template Refs?
+
+When the `ref` attribute is set on an HTML tag, the resulting DOM element is added to the `$refs` object. Template Refs provide an alternative to methods in plain JavaScript like `getElementById()` or `querySelector()`.
+
+### Example
+
+```vue
+<template>
+  <h1>Example</h1>
+  <p>Click the button to put "Hello!" as the text in the green p element.</p>
+  <button @click="changeVal">Change Text</button>
+  <p ref="pEl">This is the initial text</p>
+</template>
+
+<script>
+export default {
+  methods: {
+    changeVal() {
+      this.$refs.pEl.innerHTML = "Hello!";
+    }
+  }
+}
+</script>
+```
+
+In this example:
+
+- The `ref` attribute is set on the `<p>` element, giving it a reference name of `pEl`.
+- The `changeVal` method is called when the button is clicked.
+- The `changeVal` method accesses the `<p>` element via `this.$refs.pEl` and changes its inner HTML to "Hello!".
+
+### Use Cases
+
+Template Refs are useful in scenarios where direct manipulation of the DOM is needed, such as:
+
+- Focusing an input element programmatically.
+- Integrating with third-party libraries that require direct DOM access.
+- Managing animations or transitions that need to interact with DOM elements directly.
+
+### Summary
+
+Template Refs in Vue.js provide a simple and effective way to reference and manipulate specific DOM elements within your components, enhancing the flexibility and control you have over your application's user interface.
+
+---
+
+## Lifecycle Hooks
+
+In Vue.js, every time a component reaches a new stage in its lifecycle, a specific function runs. We can add code to these functions, which are called lifecycle hooks because we can "hook" our code into that stage.
+
+### Lifecycle Hooks Overview and Usage
+
+### beforeCreate
+
+- **Description**: Happens before the component is initialized, before Vue has set up the component's data, computed properties, methods, and event listeners.
+- **Usage**: Rarely used, as no data or methods are available.
+- **When to Use**: Perform logic that does not depend on the component's properties or methods.
+
+```javascript
+beforeCreate() {
+  console.log('Component is about to be created');
+}
+```
+
+### created
+
+- **Description**: Occurs after the component is initialized, so Vue has already set up the component's data, computed properties, methods, and event listeners. This hook is commonly used to fetch data with HTTP requests or set up initial data values.
+- **Usage**: Commonly used for fetching initial data or setting up component properties.
+- **When to Use**: Access to data, computed properties, methods, and events is available.
+
+```javascript
+created() {
+  console.log('Component has been created');
+  this.fetchData();
+}
+```
+
+### beforeMount
+
+- **Description**: Happens right before the component is mounted, just before it is added to the DOM.
+- **Usage**: Last chance to perform logic before the component is added to the DOM.
+- **When to Use**: Modify the component before it is inserted into the DOM.
+
+```javascript
+beforeMount() {
+  console.log('Component is about to be mounted');
+}
+```
+
+### mounted
+
+- **Description**: Called right after the component is added to the DOM tree, making it a good place to interact with the DOM or perform operations that depend on the component being in the DOM.
+- **Usage**: Perform DOM-dependent operations, such as initializing third-party libraries or manipulating the DOM.
+- **When to Use**: The component is in the DOM and can interact with other DOM elements.
+
+```javascript
+mounted() {
+  console.log('Component has been mounted');
+  this.initializePlugin();
+}
+```
+
+### beforeUpdate
+
+- **Description**: Runs before the component's DOM is updated.
+- **Usage**: Allows you to access the current state before the update.
+- **When to Use**: Implement logic that needs to run before the DOM is updated.
+
+```javascript
+beforeUpdate() {
+  console.log('Component is about to update');
+}
+```
+
+### updated
+
+- **Description**: Runs after the component's DOM has been updated.
+- **Usage**: Perform actions after the DOM update is complete.
+- **When to Use**: React to changes in the DOM or trigger additional updates.
+
+```javascript
+updated() {
+  console.log('Component has been updated');
+}
+```
+
+### beforeUnmount
+
+- **Description**: Runs before the component is unmounted from the DOM.
+- **Usage**: Perform cleanup tasks, such as removing event listeners.
+- **When to Use**: The component is still in the DOM, but will be removed soon.
+
+```javascript
+beforeUnmount() {
+  console.log('Component is about to be unmounted');
+}
+```
+
+### unmounted
+
+- **Description**: Runs after the component has been unmounted from the DOM.
+- **Usage**: Clean up resources, such as timers or subscriptions.
+- **When to Use**: The component is no longer in the DOM.
+
+```javascript
+unmounted() {
+  console.log('Component has been unmounted');
+}
+```
+
+### errorCaptured
+
+- **Description**: Runs when an error is captured from a child or descendant component.
+- **Usage**: Handle or log errors gracefully.
+- **When to Use**: Monitor and respond to errors in the component tree.
+
+```javascript
+errorCaptured(error, vm, info) {
+  console.error('Error captured:', error);
+  return false; // Prevent the error from propagating further
+}
+```
+
+### serverPrefetch
+
+- **Description**: Runs only during server-side rendering (SSR).
+- **Usage**: Prefetch data for server-rendered components.
+- **When to Use**: Ensure data is ready before rendering on the server.
+
+```javascript
+serverPrefetch() {
+  return this.fetchData();
+}
+```
+
+### Summary
+
+Vue.js lifecycle hooks provide a structured way to perform actions at different stages of a component's lifecycle. By leveraging these hooks, you can manage the creation, updating, and destruction of components effectively.
+
+---
