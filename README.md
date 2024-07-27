@@ -6,6 +6,7 @@ There are two different ways to write code in Vue:
 
 ### Options API
 The Options API organizes component code by logical options like `data`, `methods`, `computed`, `watch`, and lifecycle hooks. This is the traditional way of writing Vue components and is quite straightforward, making it easier for beginners to understand and use.
+Properties defined by options are exposed on this inside functions, which points to the component instance:
 
 ```javascript
 export default {
@@ -47,9 +48,13 @@ or
 
 ```vue
 <script setup>
-  import { ref, computed } from 'vue'
+  import { ref, onMounted, computed } from 'vue'
 
   const typeWriters = ref(10);
+
+  onMounted(() => {
+    console.log(`The initial count is ${count.value}.`)
+  })
 
   function remove(){
     if(typeWriters.value>0){
@@ -85,6 +90,81 @@ or
 - **Personal Preference**: Some developers prefer the structure of the Options API, while others like the flexibility of the Composition API.
 
 ---
+
+## Vue.js Application Setup
+
+### Root Component
+
+The object we are passing into `createApp` is, in fact, a component. An application instance won't render anything until its `.mount()` method is called. The `.mount()` method should always be called after all app configurations and asset registrations are done.
+
+```javascript
+import { createApp } from 'vue';
+// import the root component App from a single-file component.
+import App from './App.vue';
+
+const app = createApp(App);
+app.mount('#app');
+```
+
+### Multiple Application Instances
+
+You are not limited to a single application instance on the same page. The `createApp` API allows multiple Vue applications to co-exist on the same page, each with its own scope for configuration and global assets:
+
+```javascript
+const app1 = createApp({
+  /* ... */
+});
+app1.mount('#container-1');
+
+const app2 = createApp({
+  /* ... */
+});
+app2.mount('#container-2');
+```
+
+This setup enables you to manage different parts of the page with separate Vue applications, each with its own configurations and components.
+
+## Vue.js Reactivity and Refs
+
+### Declaring Reactive State with `ref()`
+
+In the Composition API, the recommended way to declare reactive state is using the `ref()` function.
+
+```javascript
+import { ref } from 'vue';
+
+const count = ref(0);
+```
+
+### How `ref()` Works
+
+- **Ref Object**: `ref()` takes the argument and returns it wrapped within a ref object with a `.value` property.
+- **Template Convenience**: Notice that you do not need to append `.value` when using the ref in the template. For convenience, refs are automatically unwrapped when used inside templates (with a few caveats).
+
+### Why Refs?
+
+You might be wondering why we need `refs` with the `.value` property instead of plain variables. To explain that, we need to briefly discuss how Vue's reactivity system works.
+
+- **Automatic DOM Updates**: When you use a `ref` in a template and change the `ref`'s value later, Vue automatically detects the change and updates the DOM accordingly. This is made possible with a dependency-tracking-based reactivity system.
+- **Dependency Tracking**: When a component is rendered for the first time, Vue tracks every `ref` that was used during the render. Later on, when a `ref` is mutated, it will trigger a re-render for components that are tracking it.
+- **Standard JavaScript Limitation**: In standard JavaScript, there is no way to detect the access or mutation of plain variables. However, we can intercept the `get` and `set` operations of an object's properties using getter and setter methods.
+
+### The `.value` Property
+
+The `.value` property gives Vue the opportunity to detect when a `ref` has been accessed or mutated. Under the hood, Vue performs tracking in its getter and performs triggering in its setter. Conceptually, you can think of a `ref` as an object that looks like this:
+
+```javascript
+const ref = {
+  get value() {
+    // Track the dependency
+  },
+  set value(newValue) {
+    // Trigger updates
+  }
+};
+```
+
+By using `refs`, Vue ensures a responsive and reactive UI by automatically handling changes to the data and updating the DOM efficiently.
 
 # Vue Directives
 
