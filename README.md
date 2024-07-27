@@ -43,6 +43,36 @@ export default {
 };
 ```
 
+or 
+
+```vue
+<script setup>
+  import { ref, computed } from 'vue'
+
+  const typeWriters = ref(10);
+
+  function remove(){
+    if(typeWriters.value>0){
+      typeWriters.value--;
+    }
+  }
+
+  const storageComment = computed(
+    function(){
+      if(typeWriters.value > 5) {
+        return "Many left"
+      }
+      else if(typeWriters.value > 0){
+        return "Very few left"
+      }
+      else {
+        return "No typewriters left"
+      }
+    }
+  )
+</script>
+```
+
 ### Key Differences
 
 - **Options API**: Ideal for simple and small applications. It's easier to read and write for beginners. 
