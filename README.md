@@ -89,10 +89,6 @@ or
 - **Project Size and Complexity**: For larger, more complex projects, the Composition API may offer better code organization and reusability.
 - **Personal Preference**: Some developers prefer the structure of the Options API, while others like the flexibility of the Composition API.
 
----
-
-## Vue.js Application Setup
-
 ### Root Component
 
 The object we are passing into `createApp` is, in fact, a component. An application instance won't render anything until its `.mount()` method is called. The `.mount()` method should always be called after all app configurations and asset registrations are done.
@@ -312,8 +308,6 @@ The difference between `v-show` and `v-if` is that `v-if` creates (renders) the 
 
 - **v-if**: A reason for using `v-if` over `v-show` is that `v-if` can be used with `v-else-if` and `v-else`.
 
----
-
 ## Vue Methods
 Vue methods are functions that belong to the Vue instance under the `methods` property.
 
@@ -368,8 +362,6 @@ A watcher is a method that watches a data property with the same name.
 - Computed properties can depend on many properties.
 - Computed properties are used like data properties, except they are dynamic.
 - Watchers are not referred to from HTML.
-
----
 
 ## Vue Templates
 A template in Vue is what we call the HTML part of our Vue application.
@@ -463,8 +455,6 @@ Example of using components in a Vue instance:
 
 With components, we can build complex user interfaces by composing smaller, reusable pieces of code, ensuring a clean and maintainable codebase.
 
----
-
 ## Vue Props
 Props is a configuration option in Vue that allows us to pass data to components via custom attributes on the component tag.
 
@@ -513,8 +503,6 @@ new Vue({
 
 In this example, the first `food-item` component receives a custom `food-desc` value, while the second `food-item` component uses the default description.
 
----
-
 ## Vue $emit()
 With the built-in `$emit()` method in Vue, we can create a custom event in the child component that can be captured in the parent element.
 
@@ -561,8 +549,6 @@ In this example:
 - The parent component listens for the `custom-event` from the child component using `@custom-event="handleEvent"`.
 - The child component triggers the `custom-event` using `this.$emit('custom-event', 'Hello from the child component!')`.
 - The `handleEvent` method in the parent component is called when the event is emitted, and it displays an alert with the message from the child component.
-
----
 
 ## Vue Fallthrough Attributes
 
@@ -653,15 +639,11 @@ In this case:
 
 Fallthrough attributes in Vue provide a way to pass attributes to components without declaring them as props, simplifying your component code. By using `$attrs` and `v-bind`, you can efficiently handle attributes and maintain flexibility in your component designs.
 
----
-
 # Scoped Styling
 
 Styling defined inside the `<style>` tag in a component, or in `App.vue`, is actually available globally in all components.
 
 To keep the styling limited locally to just the component, we can use the scope attribute on that component: `<style scoped>`
-
----
 
 # Local Components
 
@@ -1073,8 +1055,6 @@ export default {
 - Use `v-if`/`v-else` for simple, straightforward conditional rendering.
 - Use dynamic components for more complex, scalable, and stateful component switching.
 
----
-
 ## Dynamic Components with `<KeepAlive>`
 
 To keep the state of your previous inputs when returning to a component, use the `<KeepAlive>` tag around the `<component>` tag. This is necessary because without `<KeepAlive>`, the component is unmounted and then mounted again, reloading the component.
@@ -1152,11 +1132,7 @@ You can use the `max` attribute on the `<KeepAlive>` tag to limit the number of 
 ```
 With `<KeepAlive :max="2">`, the browser will only remember the user input of the last two visited components.
 
----
-
 Use `<KeepAlive>` with dynamic components, including how to specify which components should retain their state and how to limit the number of components that do so.
-
----
 
 ## Teleport
 
@@ -1179,8 +1155,6 @@ The `to` attribute value is given as a CSS selector. If you want to send some co
 Modals and Dialogs: Use <Teleport> to render modals directly under the <body> tag to avoid z-index and CSS issues.
 Tooltips: Use <Teleport> to position tooltips relative to the viewport for accurate placement.
 Context Menus: Use <Teleport> to display context menus at the mouse position for proper interaction.
-
----
 
 ## Template Refs
 
@@ -1228,8 +1202,6 @@ Template Refs are useful in scenarios where direct manipulation of the DOM is ne
 ### Summary
 
 Template Refs in Vue.js provide a simple and effective way to reference and manipulate specific DOM elements within your components, enhancing the flexibility and control you have over your application's user interface.
-
----
 
 ## Lifecycle Hooks
 
@@ -1363,8 +1335,6 @@ serverPrefetch() {
 ### Summary
 
 Vue.js lifecycle hooks provide a structured way to perform actions at different stages of a component's lifecycle. By leveraging these hooks, you can manage the creation, updating, and destruction of components effectively.
-
----
 
 ### Provide/Inject
 Provide/Inject in Vue is used to provide data from one component to other components, particularly in large projects.
