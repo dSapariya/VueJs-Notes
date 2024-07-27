@@ -166,6 +166,120 @@ const ref = {
 
 By using `refs`, Vue ensures a responsive and reactive UI by automatically handling changes to the data and updating the DOM efficiently.
 
+## Deep Reactivity​
+Refs can hold any value type, including deeply nested objects, arrays, or JavaScript built-in data structures like Map.
+
+A ref will make its value deeply reactive. This means you can expect changes to be detected even when you mutate nested objects or arrays:
+
+```javascript
+import { ref } from 'vue'
+
+const obj = ref({
+  nested: { count: 0 },
+  arr: ['foo', 'bar']
+})
+
+function mutateDeeply() {
+  // these will work as expected.
+  obj.value.nested.count++
+  obj.value.arr.push('baz')
+}
+```
+
+# reactive()​
+There is another way to declare reactive state, with the reactive() API. Unlike a ref which wraps the inner value in a special object, reactive() makes an object itself reactive:
+
+```javascript
+import { reactive } from 'vue'
+
+const state = reactive({ count: 0 })
+```
+
+## Vue Reactivity: `reactive` vs `ref`
+
+### `reactive`
+
+The `reactive` function in Vue is used to create a deeply reactive state object.
+
+- **Usage**: Best for creating reactive objects.
+- **Automatic Unwrapping**: Properties are automatically unwrapped when accessed in the template.
+- **Deep Reactivity**: All nested properties are made reactive.
+
+**Example**:
+```javascript
+import { reactive } from 'vue';
+
+const state = reactive({
+  count: 0,
+  user: {
+    name: 'John',
+    age: 30
+  }
+});
+```
+
+### `ref`
+
+The `ref` function in Vue is used to create a reactive reference to a value.
+
+- **Usage**: Best for primitive values or single reactive properties.
+- **.value Property**: The reactive value is accessed and mutated using the `.value` property.
+- **Shallow Reactivity**: Only the value itself is reactive; nested properties are not automatically reactive unless they are refs or reactive objects themselves.
+
+**Example**:
+```javascript
+import { ref } from 'vue';
+
+const count = ref(0);
+const user = ref({
+  name: 'John',
+  age: 30
+});
+```
+
+### Key Differences
+
+1. **Reactivity Depth**:
+   - `reactive` creates a deeply reactive object where all nested properties are reactive.
+   - `ref` creates a shallow reactive reference where only the value is reactive. For objects, you need to wrap nested properties in `ref` or `reactive` if you want them to be reactive.
+
+2. **Accessing Values**:
+   - With `reactive`, you access properties directly.
+   - With `ref`, you access the value using `.value`.
+
+3. **Usage Context**:
+   - Use `reactive` when you need a reactive state object with multiple properties.
+   - Use `ref` for primitive values or when you need a single reactive property.
+
+### When to Use Which
+
+- **`reactive`**:
+  - When you need to manage complex state with nested properties.
+  - Example: Managing form data, complex objects, or state that involves multiple related properties.
+
+- **`ref`**:
+  - When you need to manage a single reactive property or primitive value.
+  - Example: Single pieces of state like counters, flags, or individual reactive properties within a larger state object.
+
+### Combining `reactive` and `ref`
+
+You can combine `reactive` and `ref` to manage state efficiently.
+
+**Example**:
+```javascript
+import { reactive, ref } from 'vue';
+
+const state = reactive({
+  user: {
+    name: 'John',
+    age: ref(30) // Nested ref for a single property
+  },
+  loggedIn: ref(false) // Single ref for a boolean flag
+});
+```
+
+This approach allows you to create a deeply reactive object with `reactive` while still taking advantage of `ref` for specific properties when needed.
+
 # Vue Directives
 
 Vue directives are special HTML attributes with the prefix `v-` that give the HTML tag extra functionality.
