@@ -1732,6 +1732,161 @@ Vue Router uses the HTML5 History API to manage routing. This allows navigation 
 
 This setup provides a seamless and fast user experience by eliminating full page reloads and enabling smooth navigation within your Vue application.
 
+### Navigation Guards
+
+Navigation guards in Vue Router are functions that are used to guard navigations by either allowing or preventing a route from resolving. They are useful for authentication, authorization, data fetching, or any logic that should be executed before a route is entered or left.
+
+### Types of Navigation Guards
+
+1. **Global Guards**: Apply to all routes.
+2. **Per-Route Guards**: Apply to specific routes.
+3. **In-Component Guards**: Apply to a specific component.
+
+### Global Navigation Guards
+
+These are defined in your router configuration and apply to every route change.
+
+- **`beforeEach`**: Called before each route change.
+- **`beforeResolve`**: Called before resolving the route.
+- **`afterEach`**: Called after every route change.
+
+**Example**:
+```javascript
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '@/views/Home.vue';
+import About from '@/views/About.vue';
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/about', component: About }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+// Global Before Guard
+router.beforeEach((to, from, next) => {
+  console.log('Global Before Guard');
+  if (to.path === '/about' && !isAuthenticated()) {
+    next('/'); // Redirect to home if not authenticated
+  } else {
+    next(); // Proceed to route
+  }
+});
+
+// Global After Guard
+router.afterEach((to, from) => {
+  console.log('Global After Guard');
+});
+
+function isAuthenticated() {
+  // Your authentication logic
+  return false; // For example, user is not authenticated
+}
+
+export default router;
+```
+
+### Per-Route Guards
+
+These are defined directly in the route configuration and apply only to that route.
+
+**Example**:
+```javascript
+const routes = [
+  {
+    path: '/about',
+    component: About,
+    beforeEnter: (to, from, next) => {
+      console.log('Per-Route Guard');
+      if (!isAuthenticated()) {
+        next('/'); // Redirect to home if not authenticated
+      } else {
+        next(); // Proceed to route
+      }
+    }
+  }
+];
+```
+
+### In-Component Guards
+
+These are defined in the component and are called when the component is being navigated to or away from.
+
+- **`beforeRouteEnter`**: Called before the route that renders this component is confirmed.
+- **`beforeRouteUpdate`**: Called when the route that renders this component has changed, but this component is reused.
+- **`beforeRouteLeave`**: Called when the route that renders this component is navigated away from.
+
+**Example**:
+```javascript
+export default {
+  name: 'About',
+  beforeRouteEnter(to, from, next) {
+    console.log('Before Route Enter');
+    next();
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log('Before Route Update');
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    console.log('Before Route Leave');
+    next();
+  }
+};
+```
+
+### Using Next Function
+
+The `next` function controls the navigation flow:
+- **`next()`**: Proceeds to the route.
+- **`next(false)`**: Aborts the navigation.
+- **`next('/')`**: Redirects to the specified path.
+- **`next(new Error('error'))`**: Throws an error and can be caught with error handlers.
+
+### Example Scenario: Authentication Guard
+
+Here’s a complete example of using a global guard to protect routes that require authentication:
+
+**router/index.js**:
+```javascript
+import { createRouter, createWebHistory } from 'vue-router';
+import Home from '@/views/Home.vue';
+import Dashboard from '@/views/Dashboard.vue';
+import Login from '@/views/Login.vue';
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/login', component: Login },
+  {
+    path: '/dashboard',
+    component: Dashboard,
+    meta: { requiresAuth: true }
+  }
+];
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes
+});
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.requiresAuth);
+  const isAuthenticated = false; // Replace with real authentication check
+
+  if (requiresAuth && !isAuthenticated) {
+    next('/login');
+  } else {
+    next();
+  }
+});
+
+export default router;
+```
+
+In this example, the `beforeEach` global guard checks if the route requires authentication (`meta: { requiresAuth: true }`). If the user is not authenticated, they are redirected to the login page.
 
 Build
 The `npm run build` build command compiles our Vue project into .html, .js and .css files that are optimized to run directly in the browser.
